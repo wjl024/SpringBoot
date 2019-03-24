@@ -47,11 +47,11 @@ public class SysUserServiceImplTest {
 
     @Test
     public void update() {
-        SysUser sysUser=sysUserService.getOne(2L);
+        SysUser sysUser=sysUserService.getOne(5L);
         sysUser.setMobile((long) 1487258);
         sysUser.setPassword("1234wjl");
         sysUser.setUsername("王磊");
-        sysUser.setAvatar("13.jpg");
+        sysUser.setAvatar("130.jpg");
         sysUserService.update(sysUser);
     }
 }

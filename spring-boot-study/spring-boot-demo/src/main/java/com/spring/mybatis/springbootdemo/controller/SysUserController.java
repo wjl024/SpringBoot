@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin("http://localhost:80")
 public class SysUserController {
     @Resource
     private SysUserService sysUserService;
