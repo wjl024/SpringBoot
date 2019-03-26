@@ -8,11 +8,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="quickstart" />
         <module name="spring-boot-demo" />
+        <module name="upload" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="quickstart" target="1.8" />
       <module name="spring-boot-demo" target="1.8" />
+      <module name="upload" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
