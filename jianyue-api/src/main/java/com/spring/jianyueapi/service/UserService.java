@@ -9,4 +9,10 @@ public interface UserService {
     int signIn(UserDTO userDTO);
     User getUserById(Integer id);
     void update(User user);
+    /**
+     * 用户注册方法
+     * @param userDTO
+     * @return int
+     */
+    void signUp(UserDTO userDTO);
 }

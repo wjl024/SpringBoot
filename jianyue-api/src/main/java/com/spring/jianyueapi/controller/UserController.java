@@ -3,11 +3,9 @@ package com.spring.jianyueapi.controller;
 import com.aliyun.oss.OSSClient;
 import com.spring.jianyueapi.entity.User;
 import com.spring.jianyueapi.entity.dto.UserDTO;
+import com.spring.jianyueapi.service.RedisService;
 import com.spring.jianyueapi.service.UserService;
-import com.spring.jianyueapi.util.MsgConst;
-import com.spring.jianyueapi.util.ResponseResult;
-import com.spring.jianyueapi.util.StatusConst;
-import com.spring.jianyueapi.util.StringUtil;
+import com.spring.jianyueapi.util.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +21,9 @@ import java.util.UUID;
 public class UserController {
     @Resource
     private UserService userService;
+    @Resource
+    private RedisService redisService;
+
     @PostMapping(value = "/sign_in")
     public ResponseResult signIn(@RequestBody UserDTO userDTO){
         System.out.println(userDTO);
@@ -84,8 +85,41 @@ public class UserController {
         return  url.toString();
     }
 
-    @RequestMapping(value = "/avatar")
-    public User getUserById(@RequestParam("id") Integer userId){
-        return userService.getUserById(userId);
+    @GetMapping(value = "/{id}")
+    public ResponseResult getUserById(@PathVariable("id") Integer userId){
+        User user=userService.getUserById(userId);
+        return ResponseResult.success(user);
+    }
+
+    @PostMapping(value = "/verify")
+    public ResponseResult getVerifyCode(@RequestParam("mobile") String mobile){
+        User user=userService.getUserByMobile(mobile);
+        if (user!=null){
+            return ResponseResult.error(StatusConst.MOBILE_EXIST,MsgConst.MOBILE_EXIST);
+        }else{
+            //SMSUtil.send(mobile);
+            String verifyCode= SMSUtil.send(mobile);
+            System.out.println(verifyCode);
+            redisService.set(mobile,verifyCode);
+            return ResponseResult.success();
+        }
+    }
+
+    @PostMapping(value = "/check")
+    public ResponseResult checkVerifyCode(@RequestParam("mobile") String mobile,@RequestParam("verifyCode") String verifyCode){
+        String code=redisService.get(mobile).toString();
+        System.out.println(code+"---");
+        System.out.println(verifyCode);
+        if(code.equals(verifyCode)){
+            return ResponseResult.success();
+        }else {
+            return ResponseResult.error(StatusConst.VERIFYCODE_ERROR,MsgConst.VERIFYCODE_ERROR);
+        }
+    }
+
+    @PostMapping(value = "/sign_up")
+    public ResponseResult signUp(@RequestBody UserDTO userDTO){
+        userService.signUp(userDTO);
+        return ResponseResult.success();
     }
 }

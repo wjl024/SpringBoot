@@ -6,4 +6,6 @@ public class MsgConst {
     public static final String USER_MOBILE_NOT_FOUND="手机号不存在";
     public static final String PASSWORD_ERROR="密码错误";
     public static final String USER_STATUS_ERROR="账号错误";
+    public static final String MOBILE_EXIST = "手机号已被注册";
+    public static final String VERIFYCODE_ERROR = "验证码错误";
 }

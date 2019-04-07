@@ -39,4 +39,11 @@ public class UserServiceImplTest {
         int status=userService.signIn(loginUser);
         assertEquals(StatusConst.SUCCESS,status);
     }
+    @Test
+    public void signUp() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setMobile("139****1489");
+        userDTO.setPassword("1112");
+        userService.signUp(userDTO);
+    }
 }

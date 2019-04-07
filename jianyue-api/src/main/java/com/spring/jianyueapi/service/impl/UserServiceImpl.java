@@ -9,6 +9,7 @@ import com.spring.jianyueapi.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -53,5 +54,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(User user) {
         userMapper.update(user);
+    }
+
+    @Override
+    public void signUp(UserDTO userDTO) {
+        User user1=new User();
+        user1.setMobile(userDTO.getMobile());
+        user1.setPassword(StringUtil.getBase64Encoder(userDTO.getPassword()));
+        user1.setNickname("新用户");
+        user1.setAvatar("http://ppeto2k90.bkt.clouddn.com/avatar/default.png");
+        user1.setRegtime(new Date());
+        user1.setStatus((short)1);
+        userMapper.insert(user1);
     }
 }
